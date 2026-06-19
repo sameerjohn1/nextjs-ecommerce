@@ -44,8 +44,14 @@ const cartSlice=createSlice({
             }else{
                 state.items.splice(existingItemIndex,1)
             }
+        }  ,
+        filterProduct:(state,action)=>{
+            const searchTerm=action.payload;
 
-        }  
+            state.products=PRODUCTS.filter((item)=>item.name.toLowerCase().includes(searchTerm) ||
+            item.category.toLowerCase().includes(searchTerm)
+        )
+        }
     },
 })
 
