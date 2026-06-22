@@ -1,8 +1,22 @@
+"use client";
+
+import { addToCart } from "@/store/cartSlice";
+import { IProduct } from "@/types/product";
 import { PRODUCTS } from "@/utils/products";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
 
 const Products = () => {
+  const dispatch = useDispatch();
+
+  const hanldeAddToCart = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    product: IProduct,
+  ) => {
+    e.stopPropagation();
+    dispatch(addToCart({ product }));
+  };
   return (
     <div className="py-6 px-20">
       <div className="grid grid-cols-4 gap-6 w-full">
@@ -38,6 +52,7 @@ const Products = () => {
                 <button
                   className="font-medium text-sm px-3 border border-athens-gray py-2 cursor-pointer rounded-md
                 flex items-center justify-center gap-2 shadow-xs"
+                  onClick={(e) => hanldeAddToCart(e, product)}
                 >
                   <ShoppingCart className="h-4 w-4" />
                   Add to Cart
