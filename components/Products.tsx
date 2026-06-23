@@ -73,6 +73,15 @@ const Products = () => {
           </div>
         ))}
       </div>
+
+      {products.length === 0 ? (
+        <div className="flex flex-col gap-4 items-center py-8">
+          <p className="text-lg font-medium ">No Products Found</p>
+          <p className="text-pale-sky">
+            Try adjusting your search to find what you&apos;re looking for
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 };

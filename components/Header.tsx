@@ -1,17 +1,31 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Badge } from "@/shared/ui/Badge";
+import { filterProduct } from "@/store/cartSlice";
 import { useAppSelector } from "@/store/Hooks";
 import { Package, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
   const pathname = usePathname();
   const showSearchbar = pathname === "/";
   const items = useAppSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
   const totalQuantity = items.reduce((acc, curr) => curr.quantity + acc, 0);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => dispatch(filterProduct(searchTerm)), 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchTerm, dispatch]);
 
   return (
     <header
@@ -34,6 +48,7 @@ const Header = () => {
             <input
               placeholder="Search Products..."
               className="outline-none  w-48 sm:w-60 md:w-80 border border-athens-gray py-2 pl-8 rounded-md text-sm"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         )}
