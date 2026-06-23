@@ -3,7 +3,6 @@
 import { addToCart } from "@/store/cartSlice";
 import { useAppSelector } from "@/store/Hooks";
 import { IProduct } from "@/types/product";
-import { PRODUCTS } from "@/utils/products";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
@@ -11,7 +10,7 @@ import QuantityButton from "./QuantityButton";
 import { useRouter } from "next/navigation";
 
 const Products = () => {
-  const { items } = useAppSelector((state) => state.cart);
+  const { items, products } = useAppSelector((state) => state.cart);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -26,7 +25,7 @@ const Products = () => {
   return (
     <div className="py-6 px-3 sm:px-4 md:px-8 lg:px-20">
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-  gap-4 sm:gap-6 w-full">
-        {PRODUCTS.map((product) => (
+        {products.map((product) => (
           <div
             key={product.id}
             className=" rounded-lg shadow-sm border border-athens-gray overflow-hidden flex flex-col cursor-pointer"

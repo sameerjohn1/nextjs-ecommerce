@@ -1,17 +1,24 @@
 "use client";
 
+import QuantityButton from "@/components/QuantityButton";
+import { addToCart } from "@/store/cartSlice";
+import { useAppSelector } from "@/store/Hooks";
 import { findProductById } from "@/utils/products";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 function ProductDetails() {
   const { id } = useParams();
-
-  console.log(id, "id");
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const product = findProductById(id as string);
+
+  const items = useAppSelector((state) => state.cart.items);
+
   if (!product) {
     return (
       <div className="flex flex-col items-center justify-center gap-2 mt-16">
@@ -28,6 +35,11 @@ function ProductDetails() {
       </div>
     );
   }
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ product }));
+  };
+
   return (
     <div className="py-6 px-5 sm:px-6 md:px-10 lg:px-20 ">
       <Link href="/" className="flex items-center  gap-2 font-medium text-sm">
@@ -55,7 +67,26 @@ function ProductDetails() {
             {product.description}
           </p>
 
-          <div className="flex gap-4 mt-6"></div>
+          <div className="flex gap-4 mt-6">
+            {items.some((item) => item.product.id === product.id) ? (
+              <QuantityButton product={product} />
+            ) : (
+              <button
+                className="font-medium flex-3 text-sm border border-athens-gray py-2.5 cursor-pointer rounded-md flex items-center justify-center gap-2 shadow-xs bg-red-500 text-white"
+                onClick={handleAddToCart}
+              >
+                <ShoppingCart className="h-4 w-4" />
+                Add to Cart
+              </button>
+            )}
+
+            <button
+              className="font-medium flex-1 text-sm border border-athens-gray cursor-pointer rounded-md shadow-xs"
+              onClick={() => router.push("/cart")}
+            >
+              View Cart
+            </button>
+          </div>
         </div>
       </div>
     </div>
