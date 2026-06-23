@@ -8,10 +8,12 @@ import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import QuantityButton from "./QuantityButton";
+import { useRouter } from "next/navigation";
 
 const Products = () => {
   const { items } = useAppSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const hanldeAddToCart = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -28,6 +30,7 @@ const Products = () => {
           <div
             key={product.id}
             className=" rounded-lg shadow-sm border border-athens-gray overflow-hidden flex flex-col cursor-pointer"
+            onClick={() => router.push(`/product/${product.id}`)}
           >
             <div className="aspect-square">
               <Image
